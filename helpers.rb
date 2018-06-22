@@ -31,3 +31,20 @@ def get_adjacent_indexes(index)
 
     return adjacent_indexes
 end
+
+
+def check_next_letter(board, tile, tile_index, remaining_word)
+    return true if remaining_word.length == 0
+
+    adjacent_indexes = get_adjacent_indexes(tile_index)
+    adjacent_indexes.each do |index|
+        can_form_remaining = false
+        if board[index] == remaining_word[0] || board[index] == "*"
+            can_form_remaining = check_next_letter(board, board[index], index, remaining_word[1..-1])
+        end
+
+        return true if can_form_remaining
+    end
+
+    return false
+end
