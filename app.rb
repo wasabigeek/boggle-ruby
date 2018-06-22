@@ -1,22 +1,20 @@
-require "./helpers"
+require "json"
+
 
 # get word to check from command line
+if not ARGV.first
+    puts "Please enter a word.\nExpected format: ruby app.rb <word>"
+    exit
+end
 word = ARGV.first
 
-# convert board text file into a hash
-board_file = open('board.txt', 'r')
-board = board_file.read.split(", ")
-board_file.close
-# print board, "\n"
+# get valid words
+valid_words = JSON.parse(File.read('valid_words.json'))
 
 # check that word is valid
-puts "Checking that \"#{word}\" can be formed..."
-can_form_word = check_word(board, word)
-
-if can_form_word
+puts "Checking that \"#{word}\" is valid..."
+if valid_words.include?(word)
     puts "#{word} can be formed!"
 else
     puts "#{word} cannot be formed :("
 end
-
-# check that word is in dictionary

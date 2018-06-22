@@ -18,22 +18,22 @@ class TestCheckWord < Test::Unit::TestCase
     end
 
     def test_check_horizontal_word()
-        assert_true(check_word(@board, "TAP"))
+        assert_true(check_word_is_formable(@board, "TAP"))
     end
 
-    def test_check_word_with_asterisk()
-        assert_true(check_word(@board, "BOSS"))
+    def test_check_word_is_formable_with_asterisk()
+        assert_true(check_word_is_formable(@board, "BOSS"))
     end
 
-    def test_check_word_with_diagonal()
-        assert_true(check_word(@board, "BEAK"))
-        assert_true(check_word(@board, "BOAR"))
-        assert_true(check_word(@board, "BIRD"))
+    def test_check_word_is_formable_with_diagonal()
+        assert_true(check_word_is_formable(@board, "BEAK"))
+        assert_true(check_word_is_formable(@board, "BOAR"))
+        assert_true(check_word_is_formable(@board, "BIRD"))
     end
 
     def test_letters_not_adjacent()
-        assert_false(check_word(@board, "DATE"))
+        assert_false(check_word_is_formable(@board, "DATE"))
         # this case can pass if reverse traversal is allowed
-        assert_false(check_word(@board, "BOSSDOM"))
+        assert_false(check_word_is_formable(@board, "BOSSDOM"))
     end
 end

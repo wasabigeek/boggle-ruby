@@ -39,7 +39,7 @@ def check_next_letter(board, tile, tile_index, remaining_word, used_indexes)
 end
 
 
-def check_word(board, word)
+def check_word_is_formable(board, word)
     word = word.upcase  # to prevent any casing issues
 
     first_letter = word[0]
