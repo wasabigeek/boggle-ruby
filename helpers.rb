@@ -32,3 +32,20 @@ def check_next_letter(board, tile, tile_index, remaining_word)
 
     return false
 end
+
+
+def check_word(board, word)
+    word = word.upcase  # to prevent any casing issues
+
+    first_letter = word[0]
+    remaining_word = word[1..-1]
+    can_form_word = false
+    board.each_with_index do |tile, index|
+        # find possible starts
+        if tile == word[0] || tile == "*"
+            can_form_word = check_next_letter(board, tile, index, remaining_word)
+            break if can_form_word
+        end
+    end
+    return can_form_word
+end

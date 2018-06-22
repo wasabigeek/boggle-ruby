@@ -18,20 +18,21 @@ class TestCheckWord < Test::Unit::TestCase
     end
 
     def test_check_horizontal_word()
-        assert_true(check_next_letter(@board, "T", 0, "AP"))
+        assert_true(check_word(@board, "TAP"))
     end
 
     def test_check_word_with_asterisk()
-        assert_true(check_next_letter(@board, "B", 9, "OSS"))
+        assert_true(check_word(@board, "BOSS"))
     end
 
     def test_check_word_with_diagonal()
-        assert_true(check_next_letter(@board, "B", 9, "EAK"))
-        assert_true(check_next_letter(@board, "B", 9, "OAR"))
-        assert_true(check_next_letter(@board, "B", 9, "IRD"))
+        assert_true(check_word(@board, "BEAK"))
+        assert_true(check_word(@board, "BOAR"))
+        assert_true(check_word(@board, "BIRD"))
     end
 
     def test_letters_not_adjacent()
-        assert_false(check_next_letter(@board, "*", 3, "ATE"))
+        assert_false(check_word(@board, "DATE"))
+        assert_false(check_word(@board, "BOSSDOM"))
     end
 end
