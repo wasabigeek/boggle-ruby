@@ -5,6 +5,7 @@ require "test/unit"
 class TestAdjacentIndexes < Test::Unit::TestCase
     def test_adjacent_indexes()
         assert_equal(get_adjacent_indexes(0), [4, 1, 5])
+        assert_equal(get_adjacent_indexes(5), [1, 9, 4, 6, 0, 2, 8, 10])
     end
 end
 
