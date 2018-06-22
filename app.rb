@@ -12,13 +12,17 @@ board.each_with_index {|tile, index|
 }
 
 score = 0
+found_words = []
 loop do
     puts "Your current score is #{score}. Enter a word:"
     print "> "
     # get user's input
     word = $stdin.gets.chomp
-    if valid_words.include?(word)
+    if found_words.include?(word)
+        puts "You've already found #{word} :("
+    elsif valid_words.include?(word)
         score += word.length
+        found_words.push(word)
         puts "Found #{word}!"
     else
         puts "#{word} is not valid :("
