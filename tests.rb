@@ -33,6 +33,7 @@ class TestCheckWord < Test::Unit::TestCase
 
     def test_letters_not_adjacent()
         assert_false(check_word(@board, "DATE"))
+        # this case can pass if reverse traversal is allowed
         assert_false(check_word(@board, "BOSSDOM"))
     end
 end

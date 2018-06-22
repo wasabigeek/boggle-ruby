@@ -17,14 +17,19 @@ def get_adjacent_indexes(index)
 end
 
 
-def check_next_letter(board, tile, tile_index, remaining_word)
+def check_next_letter(board, tile, tile_index, remaining_word, used_indexes)
+    # puts "Checking for \"#{remaining_word}\" from #{tile} at #{tile_index}..."
     return true if remaining_word.length == 0
 
     adjacent_indexes = get_adjacent_indexes(tile_index)
     adjacent_indexes.each do |index|
+        # to prevent reverse traversal
+        next if used_indexes.include?(index)
+
         can_form_remaining = false
         if board[index] == remaining_word[0] || board[index] == "*"
-            can_form_remaining = check_next_letter(board, board[index], index, remaining_word[1..-1])
+            used_indexes.push(index)
+            can_form_remaining = check_next_letter(board, board[index], index, remaining_word[1..-1], used_indexes)
         end
 
         return true if can_form_remaining
@@ -43,7 +48,7 @@ def check_word(board, word)
     board.each_with_index do |tile, index|
         # find possible starts
         if tile == word[0] || tile == "*"
-            can_form_word = check_next_letter(board, tile, index, remaining_word)
+            can_form_word = check_next_letter(board, tile, index, remaining_word, [])
             break if can_form_word
         end
     end
