@@ -13,6 +13,13 @@ class Board
         valid_words.include?(word)
     end
 
+    def print_board
+        puts "Here's the board:"
+        tiles.each_with_index {|tile, index|
+            print "#{tile} #{"\n"if index % 4 == 3}"
+        }
+    end
+
     private
 
         def generate_tiles
