@@ -13,14 +13,22 @@ class Game
     end
 
     def submit_word(word)
-        if found_words.include?(word)
+        if time_out?
+            puts "Time out!"
+        elsif found_words.include?(word)
             puts "You've already found #{word} :("
         elsif board.check_word(word)
-            score += word.length
-            found_words.push(word)
+            self.score += word.length
+            self.found_words.push(word)
             puts "Found #{word}!"
         else
             puts "#{word} is not valid :("
         end
     end
+
+    private
+
+        def time_out?
+            started_at < Time.now - (60 * 2) ? true : false
+        end
 end

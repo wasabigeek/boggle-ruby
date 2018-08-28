@@ -17,7 +17,7 @@ module BoggleRuby
         print "> "
         word = $stdin.gets.chomp
 
-        submit_word(word)
+        game.submit_word(word)
     end
   end
 end
