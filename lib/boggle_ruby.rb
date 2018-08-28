@@ -1,17 +1,23 @@
 require "json"
 
 require "./lib/boggle_ruby/version.rb"
+require "./lib/game.rb"
 
 
 module BoggleRuby
   def self.play
-    # get valid words
-    valid_words = JSON.parse(File.read('valid_words.json'))
+    game = Game.new()
+    # print game.board.tiles
+    # print game.board.valid_words
+    # w = game.board.valid_words.first
+
+    # puts game.submit_word(w)
+    # puts game.submit_word("asldfjasldfkjasdl")
+
     puts "How to play? Enter a word, or press CTRL-C to exit."
 
     puts "Here's the board:"
-    board = File.read('board.txt').split(", ")
-    board.each_with_index {|tile, index|
+    game.board.tiles.each_with_index {|tile, index|
         print "#{tile} #{"\n"if index % 4 == 3}"
     }
 
@@ -24,7 +30,7 @@ module BoggleRuby
         word = $stdin.gets.chomp
         if found_words.include?(word)
             puts "You've already found #{word} :("
-        elsif valid_words.include?(word)
+        elsif game.board.valid_words.include?(word)
             score += word.length
             found_words.push(word)
             puts "Found #{word}!"
