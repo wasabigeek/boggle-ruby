@@ -8,6 +8,7 @@ class Board
         @tiles = tiles.nil? ? generate_tiles : tiles
     end
 
+    # check if word is in valid list, which is lazily generated
     def check_word(word)
         valid_words.include?(word)
     end
@@ -19,6 +20,7 @@ class Board
         }
     end
 
+    # checks if word is in board via brute force
     def find_word(word)
         word = word.upcase  # to prevent any casing issues
 
@@ -87,14 +89,15 @@ class Board
         end
 
         def can_form_word_from_index(board, index, word, used_indexes)
-            # puts "Checking for \"#{word}\" from #{board[index]} at #{index}..."
+            # if the word is empty, we've successfully matched the final letter
             return true if word.length == 0
 
             # does the first letter match the current tile?
+            # if not, this path is invalid, exit early
             return false unless board[index] == word[0] || board[index] == "*"
 
-            # if it does, save it as traversed and check adjacents for next letter
-            # need to create a new array so it doesn't get populated with the letters from failed paths
+            # remember the current tile so we don't traverse backwards
+            # need to create a new array so we don't retain the letters from failed paths
             new_used_indexes = used_indexes + [index]
             (get_adjacent_indexes(index) - new_used_indexes)
                 .each do |adj_index|
