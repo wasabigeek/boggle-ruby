@@ -2,11 +2,10 @@ require 'json'
 
 
 class Board
-    attr_reader :tiles, :valid_words
+    attr_reader :tiles
 
-    def initialize
-        @tiles = generate_tiles
-        @valid_words = generate_valid_words
+    def initialize(tiles: nil)
+        @tiles = tiles.nil? ? generate_tiles : tiles
     end
 
     def check_word(word)
@@ -20,7 +19,24 @@ class Board
         }
     end
 
+    def find_word(word)
+        word = word.upcase  # to prevent any casing issues
+
+        tiles.each_with_index do |tile, index|
+            # can remove this
+            next unless tile == word[0] || tile == "*"
+            # find possible starts
+            return true if can_form_word_from_index(tiles, index, word, [])
+        end
+
+        return false
+    end
+
     private
+
+        def valid_words
+            @valid_words ||= generate_valid_words
+        end
 
         def generate_tiles
             # https://boardgames.stackexchange.com/q/29264
@@ -54,7 +70,7 @@ class Board
 
         # Given a tile's index (0 - 15), return a list of adjacent tile indexes
         def get_adjacent_indexes(index)
-            row = index / 4  # Ruby will round-down integer division
+            row = (index / 4)  # Ruby will round-down integer division
             col = index % 4
 
             adjacent_indexes = []
@@ -70,43 +86,22 @@ class Board
             return adjacent_indexes
         end
 
+        def can_form_word_from_index(board, index, word, used_indexes)
+            # puts "Checking for \"#{word}\" from #{board[index]} at #{index}..."
+            return true if word.length == 0
 
-        def find_next_letter(board, tile, tile_index, remaining_word, used_indexes)
-            # puts "Checking for \"#{remaining_word}\" from #{tile} at #{tile_index}..."
-            return true if remaining_word.length == 0
+            # does the first letter match the current tile?
+            return false unless board[index] == word[0] || board[index] == "*"
 
-            adjacent_indexes = get_adjacent_indexes(tile_index)
-            adjacent_indexes.each do |index|
-                # to prevent reverse traversal
-                next if used_indexes.include?(index)
-
-                can_form_remaining = false
-                if board[index] == remaining_word[0] || board[index] == "*"
-                    used_indexes.push(index)
-                    can_form_remaining = find_next_letter(board, board[index], index, remaining_word[1..-1], used_indexes)
+            # if it does, save it as traversed and check adjacents for next letter
+            # need to create a new array so it doesn't get populated with the letters from failed paths
+            new_used_indexes = used_indexes + [index]
+            (get_adjacent_indexes(index) - new_used_indexes)
+                .each do |adj_index|
+                    # recursively check adjacent tiles for remaining letters
+                    return true if can_form_word_from_index(board, adj_index, word[1..-1], new_used_indexes)
                 end
-
-                return true if can_form_remaining
-            end
 
             return false
         end
-
-
-        def find_word(board, word)
-            word = word.upcase  # to prevent any casing issues
-
-            first_letter = word[0]
-            remaining_word = word[1..-1]
-            can_form_word = false
-            board.each_with_index do |tile, index|
-                # find possible starts
-                if tile == word[0] || tile == "*"
-                    can_form_word = find_next_letter(board, tile, index, remaining_word, [])
-                    break if can_form_word
-                end
-            end
-            return can_form_word
-        end
-
 end
