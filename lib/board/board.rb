@@ -65,7 +65,7 @@ class Board
 
         def generate_valid_words
             dictionary = File.read("lib/board/dictionary.txt").split("\n")
-            valid_words = dictionary.select {|word| find_word(tiles, word)}
+            valid_words = dictionary.select {|word| find_word(word)}
         end
 
         # Given a tile's index (0 - 15), return a list of adjacent tile indexes
